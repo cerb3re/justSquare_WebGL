@@ -26,6 +26,7 @@ Arena = function(game) {
     
     mainBox2.scaling.y = 2;
     mainBox2.position = new BABYLON.Vector3(5,((3/2)*mainBox2.scaling.y),-5);
+    mainBox2.rotation.x = mainBox.rotation.y;
 
     mainBox3.scaling.y = 3;
     mainBox3.position = new BABYLON.Vector3(-5,((3/2)*mainBox3.scaling.y),-5);
