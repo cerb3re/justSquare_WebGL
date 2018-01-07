@@ -6,16 +6,24 @@
 Arena = function(game) {
     this.game       = game;
     
+    var materialGround = new BABYLON.StandardMaterial("groundTexture", scene);
+    materialGround.diffuseTexture = new BABYLON.Texture("assets/images/brick.jpg", scene);
+    // uScale : height
+    materialGround.diffuseTexture.uScale = 4.0;
+    materialGround.diffuseTexture.vScale = 4.0;
+    
     var scene       = game.scene;
     var light       = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-    var ground      = new BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, scene);
+    var ground      = new BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, scene);   
     var mainBox     = BABYLON.Mesh.CreateBox("box1", 3, scene);
     var mainBox2    = mainBox.clone("box2"); 
     var mainBox3    = mainBox.clone("box3"); 
     var mainBox4    = mainBox.clone("box4");
     var cylinder    = BABYLON.Mesh.CreateCylinder("cyl1", 20, 5, 5, 20, 4, scene);
     
-    ground.scaling  = new BABYLON.Vector3(2, 2, 3);
+    ground.scaling      = new BABYLON.Vector3(2, 10, 3);
+    ground.scaling.z    = 2;
+    ground.material     = materialGround;
     
     // initial size: 3
     // every initial scale object are mapped by there vertex center and must be 
