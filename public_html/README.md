@@ -3,7 +3,8 @@ JUST SQUARES
 
 ```
 This game can be used in browser with WebGL tech. and only used for personnal 
-research.
+research working with the personnal PhP 
+FrameWork https://github.com/cerb3re/Framework
 
 It's a first person shooter with object interaction.
 
