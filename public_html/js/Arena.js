@@ -16,7 +16,7 @@ Arena = function(game) {
     materialObject.diffuseTexture = new BABYLON.Texture("assets/images/object.jpg");
     
     var scene       = game.scene;
-    var light       = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+    var light       = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 20, 0), scene);
     var ground      = new BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, scene);   
     var mainBox     = BABYLON.Mesh.CreateBox("box1", 3, scene);
     var mainBox2    = mainBox.clone("box2"); 
@@ -24,9 +24,14 @@ Arena = function(game) {
     var mainBox4    = mainBox.clone("box4");
     var cylinder    = BABYLON.Mesh.CreateCylinder("cyl1", 20, 5, 5, 20, 4, scene);
     
+    // diffuse: color
+    light.diffuse       = new BABYLON.Color3(1, 1, 1);
+    // specular: intensity
+    light.specular     = new BABYLON.Color3(1, 1, 1);
+  
     // initial size: 3
     // every initial scale object are mapped by there vertex center and must be 
-    // multiplie by the double of there divided center.
+    // multiplie by the double of there divided center to be on the floor.
     mainBox.scaling.y   = 1;
     mainBox.position    = new BABYLON.Vector3(5,((3 / 2) * mainBox.scaling.y), 5);
     mainBox.rotation.y  = (Math.PI * 45 / 180);
