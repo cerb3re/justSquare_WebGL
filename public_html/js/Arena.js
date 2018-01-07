@@ -19,7 +19,7 @@ Arena = function(game) {
     
     // initial size: 3
     // every initial scale object are mapped by there vertex center and must be 
-    // multiplie by twice of there initial size to get mapped into the floor.
+    // multiplie by the double of there divided center.
     mainBox.scaling.y   = 1;
     mainBox.position    = new BABYLON.Vector3(5,((3 / 2) * mainBox.scaling.y), 5);
     mainBox.rotation.y  = (Math.PI * 45 / 180);
