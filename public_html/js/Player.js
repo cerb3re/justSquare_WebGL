@@ -1,4 +1,6 @@
 /*
+ * Used for player interaction
+ * 
  * t.chenier 2018
  */
 
@@ -55,19 +57,19 @@ Player = function(game, canvas) {
        }
     }, false);
     
-    // Initialisation de la caméra
+    // Camera init
     this._initCamera(this.game.scene, canvas);
 };
 
 Player.prototype = {
     _initCamera : function(scene, canvas) {
-        // On crée la caméra
+        // Camera creation
         this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(-20, 5, 0), scene);
         this.camera.axisMovement = [false, false, false, false];
         this.isAlive = true;
         this.camera.setTarget(BABYLON.Vector3.Zero());
-
     }
 };
+// see why scene not in scope
 var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 1, 0.8, 10, new BABYLON.Vector3(0, 0, 0), scene);
 camera.attachControl(canvas, true);

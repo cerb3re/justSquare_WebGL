@@ -1,3 +1,9 @@
+/*
+ * Used for Arena struct.
+ * 
+ * t.chenier 2018
+ */
+
 Arena = function(game) {
     // Appel des variables nécéssaires
     this.game = game;
@@ -10,7 +16,7 @@ Arena = function(game) {
 
     // Material pour le sol
     var materialGround = new BABYLON.StandardMaterial("wallTexture", scene);
-    materialGround.diffuseTexture = new BABYLON.Texture("assets/images/tile.jpg", scene);
+    materialGround.diffuseTexture = new BABYLON.Texture("./assets/images/tile.jpg", scene);
     materialGround.diffuseTexture.uScale = 8.0;
     materialGround.diffuseTexture.vScale = 8.0;
 

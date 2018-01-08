@@ -1,12 +1,18 @@
+/*
+ * Used for game engine
+ * 
+ * t.chenier 2018
+ */
+
 Game = function(idCanvas) {
-    var canvas = document.getElementById(idCanvas);
-    var engine = new BABYLON.Engine(canvas, true);
-    var _this = this;
+    var canvas  = document.getElementById(idCanvas);
+    var engine  = new BABYLON.Engine(canvas, true);
+    var _this   = this;
     
-    this.scene = this._initScene(engine);
+    this.scene  = this._initScene(engine);
     
     var _player = new Player(_this, canvas);
-    var _arena = new Arena(_this);
+    var _arena  = new Arena(_this);
     
     engine.runRenderLoop(function () {
        _this.scene.render(); 
