@@ -48,20 +48,48 @@ Player = function(game, canvas) {
     // change the camera movement angle in function of the
     // axis mouse movement in a dynamic way.
     window.addEventListener("mousemove", function(e) {
-       _this.camera.rotation.y += e.movementX * 0.001 * (_this.angularSensibility / 250);
-       console.log(e.movementX);
-       var nextRotationX = _this.camera.rotation.x + (e.movementY * 0.001 * (_this.angularSensibility / 250));
-       
-       if (nextRotationX < degToRad(90) && nextRotationX > degToRad(-90)) {
-           _this.camera.rotation.x += e.movementY * 0.001 * (_this.angularSensibility / 250);
-       }
+       if(_this.rotEngaged === true){
+            _this.camera.rotation.y += e.movementX * 0.001 * (_this.angularSensibility / 250);
+            console.log(e.movementX);
+            var nextRotationX = _this.camera.rotation.x + (e.movementY * 0.001 * (_this.angularSensibility / 250));
+
+            if (nextRotationX < degToRad(90) && nextRotationX > degToRad(-90)) {
+                _this.camera.rotation.x += e.movementY * 0.001 * (_this.angularSensibility / 250);
+            }
+        }
     }, false);
     
-    // Camera init
     this._initCamera(this.game.scene, canvas);
+    this.controlEnabled = false;
+    this._initPointerLock(); 
 };
 
 Player.prototype = {
+    _initPointerLock : function() {
+    var _this = this;
+    
+    var canvas = this.game.scene.getEngine().getRenderingCanvas();
+    canvas.addEventListener("click", function(evt) {
+        canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
+        if (canvas.requestPointerLock) {
+            canvas.requestPointerLock();
+        }
+    }, false);
+
+    var pointerlockchange = function (event) {
+        _this.controlEnabled = (document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas);
+        if (!_this.controlEnabled) {
+            _this.rotEngaged = false;
+        } else {
+            _this.rotEngaged = true;
+        }
+    };
+    
+    document.addEventListener("pointerlockchange", pointerlockchange, false);
+    document.addEventListener("mspointerlockchange", pointerlockchange, false);
+    document.addEventListener("mozpointerlockchange", pointerlockchange, false);
+    document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+},
     _initCamera : function(scene, canvas) {
         // Camera creation
         this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(-20, 5, 0), scene);
