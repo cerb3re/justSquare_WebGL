@@ -47,7 +47,6 @@ Game = function(canvasId) {
 };
 
 
-
 Game.prototype = {
     // Prototype d'initialisation de la scène
     _initScene : function(engine) {

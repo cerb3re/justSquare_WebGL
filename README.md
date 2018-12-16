@@ -3,13 +3,9 @@ JUST SQUARES
 
 ```
 CAUTION: Use it in firefox, or with a server (this game used ajax request) to make
-it work
+it works
 
-This game can be used in browser with WebGL tech. and only used for personnal 
-research working with the personnal PhP 
-FrameWork https://github.com/cerb3re/Framework
-
-It's a first person shooter with object interaction and multiple online player
+This game is a complet first person shooter working in browser with WebGL tech.
 
 You can download it and just launch the "index.html" file to see the result
 ```
@@ -18,6 +14,7 @@ You can download it and just launch the "index.html" file to see the result
 ## Actual version
 
 - 1: Just print some object in 3D
+- 2: Collisions system's working
 - 2: coming soon, will have a 3D player interaction 
 
 ## From
