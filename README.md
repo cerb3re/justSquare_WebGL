@@ -13,7 +13,7 @@ It's a first person shooter with object interaction and multiple online player
 
 You can download it and just launch the "index.html" file to see the result
 ```
-![alt text](https://github.com/cerb3re/justSquare_WebGL/blob/master/public_html/assets/images/ingame.jpg)
+![alt text](https://github.com/cerb3re/justSquare_WebGL/assets/images/ingame3.jpg)
 
 ## Actual version
 
