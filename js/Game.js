@@ -69,6 +69,7 @@ Game.prototype = {
         return scene;
     },
     renderRockets : function() {
+        
         for (var i = 0; i < this._rockets.length; i++) {
             // On crée un rayon qui part de la base de la roquette vers l'avant
             var rayRocket = new BABYLON.Ray(this._rockets[i].position,this._rockets[i].direction);
@@ -93,12 +94,15 @@ Game.prototype = {
                     explosionRadius.material.alpha = 0.6;
                     
                     // Chaque frame, on baisse l'opacité et on efface l'objet quand l'alpha est arrivé à 0
-                    explosionRadius.registerAfterRender(function(){
-                        explosionRadius.material.alpha -= 0.02;
-                        if(explosionRadius.material.alpha<=0){
-                            explosionRadius.dispose();
-                        }
-                    });
+                    //explosionRadius.computeWorldMatrix(true);
+
+                    this._explosionRadius.push(explosionRadius);
+                    // DEGATS
+                    if (this._PlayerData.isAlive && this._PlayerData.camera.playerBox && explosionRadius.intersectsMesh(this._PlayerData.camera.playerBox)) {
+                        // Envoi à la fonction d'affectation des dégâts
+                        //console.log('hit');
+                        this._PlayerData.getDamage(30);
+                    }
                 }
                 this._rockets[i].dispose();
                 this._rockets.splice(i,1);
@@ -110,15 +114,6 @@ Game.prototype = {
     },
     renderExplosionRadius : function(){
         if(this._explosionRadius.length > 0){
-            // Calcule la matrice de l'objet pour les collisions
-            explosionRadius.computeWorldMatrix(true);
-
-            // On fait un tour de bouche pour chaque joueur de la scène
-            if (this._PlayerData.isAlive && this._PlayerData.camera.playerBox && explosionRadius.intersectsMesh(this._PlayerData.camera.playerBox)) {
-                // Envoi à la fonction d'affectation des dégats
-                this._PlayerData.getDamage(30);
-                console.log('hit');
-            }
             for (var i = 0; i < this._explosionRadius.length; i++) {
                 this._explosionRadius[i].material.alpha -= 0.02;
                 if(this._explosionRadius[i].material.alpha<=0){
@@ -127,7 +122,7 @@ Game.prototype = {
                 }
             }
         }
-    }
+    },
 };
 
 // Page entièrement chargé, on lance le jeu
