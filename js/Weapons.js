@@ -73,14 +73,6 @@ Weapons.prototype = {
     },
     launchFire : function() {
         if (this.canFire) {
-            console.log('Pew !');
-            this.canFire = false; 
-        } else {
-            // Nothing to do : cannot fire
-        }
-    },
-    launchFire : function() {
-        if (this.canFire) {
             var renderWidth = this.Player.game.engine.getRenderWidth(true);
             var renderHeight = this.Player.game.engine.getRenderHeight(true);
             
@@ -117,6 +109,7 @@ Weapons.prototype = {
 
         // On donne accès à Player dans registerBeforeRender
         var Player = this.Player;
+        this.Player.game._rockets.push(newRocket);
                 
         newRocket.registerAfterRender(function(){
             // On bouge la roquette vers l'avant

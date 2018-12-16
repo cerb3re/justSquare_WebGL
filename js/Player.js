@@ -125,7 +125,10 @@ Player.prototype = {
         hitBoxPlayer.isMain = true;
 
         /////////////////////////////////////////////////
-
+        // La santé du joueur
+        this.camera.health = 100;
+        // L'armure du joueur
+        this.camera.armor = 0;
 
     },
     _initPointerLock : function() {
@@ -202,5 +205,14 @@ Player.prototype = {
             this.camera.Weapons.stopFire();
         }
     },
-    
+    getDamage : function(damage){
+        var damageTaken = damage;
+        // Si le joueur i a encore de la vie
+        if(this.camera.health>damageTaken){
+            this.camera.health-=damageTaken;
+        }else{
+            // Sinon, il est mort
+            console.log('Vous êtes mort...');
+        }
+    },
 };

@@ -10,17 +10,29 @@ Game = function(canvasId) {
     this.scene = this._initScene(engine);
     
     var _player = new Player(_this, canvas);
-
     var _arena = new Arena(_this);
+
+    // sert à récuperer le joueur pour les différentes interactions 
+    this._PlayerData = _player;
+
+    // Les roquettes générées dans Player.js
+    this._rockets = [];
+
+    // Les explosions qui découlent des roquettes
+    this._explosionRadius = [];
 
     // Permet au jeu de tourner
     engine.runRenderLoop(function () {
 
-        // Récuperet le ratio par les fps
+        // Récupere le ratio par les fps
         _this.fps = Math.round(1000/engine.getDeltaTime());
 
         // Checker le mouvement du joueur en lui envoyant le ratio de déplacement
         _player._checkMove((_this.fps)/60);
+
+        // On apelle nos deux fonctions de calcul pour les roquettes
+        _this.renderRockets();
+        _this.renderExplosionRadius();
 
         _this.scene.render();
         document.addEventListener("keypress", function(event)
@@ -78,7 +90,7 @@ Game.prototype = {
                     explosionRadius.material = new BABYLON.StandardMaterial("textureExplosion", this.scene);
                     explosionRadius.material.diffuseColor = new BABYLON.Color3(1,0.6,0);
                     explosionRadius.material.specularColor = new BABYLON.Color3(0,0,0);
-                    explosionRadius.material.alpha = 0.8;
+                    explosionRadius.material.alpha = 0.6;
                     
                     // Chaque frame, on baisse l'opacité et on efface l'objet quand l'alpha est arrivé à 0
                     explosionRadius.registerAfterRender(function(){
@@ -89,17 +101,33 @@ Game.prototype = {
                     });
                 }
                 this._rockets[i].dispose();
-                // On enlève de l'array _rockets le mesh numéro i (défini par la boucle)
                 this._rockets.splice(i,1);
-            } else{
+            }else{
                 let relativeSpeed = 1 / ((this.fps)/60);
-                this._rockets[i].translate(new BABYLON.Vector3(0,0,1),relativeSpeed,0);
+                this._rockets[i].position.addInPlace(this._rockets[i].direction.scale(relativeSpeed));
             }
-            
         };
     },
     renderExplosionRadius : function(){
-    },
+        if(this._explosionRadius.length > 0){
+            // Calcule la matrice de l'objet pour les collisions
+            explosionRadius.computeWorldMatrix(true);
+
+            // On fait un tour de bouche pour chaque joueur de la scène
+            if (this._PlayerData.isAlive && this._PlayerData.camera.playerBox && explosionRadius.intersectsMesh(this._PlayerData.camera.playerBox)) {
+                // Envoi à la fonction d'affectation des dégats
+                this._PlayerData.getDamage(30);
+                console.log('hit');
+            }
+            for (var i = 0; i < this._explosionRadius.length; i++) {
+                this._explosionRadius[i].material.alpha -= 0.02;
+                if(this._explosionRadius[i].material.alpha<=0){
+                    this._explosionRadius[i].dispose();
+                    this._explosionRadius.splice(i, 1);
+                }
+            }
+        }
+    }
 };
 
 // Page entièrement chargé, on lance le jeu
