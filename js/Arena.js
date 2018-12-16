@@ -1,9 +1,3 @@
-/*
- * Used for Arena struct.
- * 
- * t.chenier 2018
- */
-
 Arena = function(game) {
     // Appel des variables nécéssaires
     this.game = game;
@@ -16,7 +10,7 @@ Arena = function(game) {
 
     // Material pour le sol
     var materialGround = new BABYLON.StandardMaterial("wallTexture", scene);
-    materialGround.diffuseTexture = new BABYLON.Texture("./assets/images/tile.jpg", scene);
+    materialGround.diffuseTexture = new BABYLON.Texture("assets/images/tile.jpg", scene);
     materialGround.diffuseTexture.uScale = 8.0;
     materialGround.diffuseTexture.vScale = 8.0;
 
@@ -30,6 +24,12 @@ Arena = function(game) {
     boxArena.scaling.y = 0.3;
     boxArena.scaling.z = 0.8;
     boxArena.scaling.x = 3.5;
+    // activation des collisions sur les box de l'arène
+    boxArena.checkCollisions = true;
+
+    var playerBox = BABYLON.Mesh.CreateBox("headMainPlayer", 3, scene);
+    playerBox.position = new BABYLON.Vector3(-20, 5, 0);
+    playerBox.ellipsoid = new BABYLON.Vector3(2, 2, 2);
 
     var columns = [];
     var numberColumn = 6;
@@ -43,11 +43,13 @@ Arena = function(game) {
             mainCylinder.material = materialWall;
             columns[i].push(mainCylinder);
 
+
             if(numberColumn>1){
                 for (let y = 1; y <= numberColumn - 1; y++) {
                     let newCylinder = columns[i][0].clone("cyl"+y+"-"+i);
                     newCylinder.position = new BABYLON.Vector3(-(sizeArena/2) + (ratio*y),30/2,columns[i][0].position.z);
                     columns[i].push(newCylinder);
+                    
                 }
             }
         }
