@@ -3,6 +3,7 @@ Player = function(game, canvas) {
     var _this = this;
     // Si le tir est activée ou non
     this.weponShoot = false;
+
     _this.angularSensibility = 0;
     // Le jeu, chargé dans l'objet Player
     this.game = game;
@@ -14,8 +15,29 @@ Player = function(game, canvas) {
    // On récupère le canvas de la scène 
     var canvas = this.game.scene.getEngine().getRenderingCanvas();
 
-    // On affecte le clic et on vérifie qu'il est bien utilisé dans la scène (_this.controlEnabled)
-    canvas.addEventListener("mousedown", function(evt) {
+   
+
+
+    // Initialisation de la caméra
+    this._initCamera(this.game.scene, canvas); 
+    // Le joueur doit cliquer dans la scène pour que controlEnabled soit changé
+    this.controlEnabled = false;
+
+    // On lance l'event _initPointerLock pour checker le clic dans la scène
+    this._initPointerLock(); 
+    // Quand la souris bouge dans la scène
+    window.addEventListener("mousemove", function(evt) {
+        if(_this.rotEngaged === true){
+            _this.camera.playerBox.rotation.y+=evt.movementX * 0.001 * (_this.angularSensibility / 250);
+            var nextRotationX = _this.camera.playerBox.rotation.x + (evt.movementY * 0.001 * (_this.angularSensibility / 250));
+            if( nextRotationX < degToRad(90) && nextRotationX > degToRad(-90)){
+                _this.camera.playerBox.rotation.x+=evt.movementY * 0.001 * (_this.angularSensibility / 250);
+            }
+        }
+    }, false);
+    
+     // On affecte le clic et on vérifie qu'il est bien utilisé dans la scène (_this.controlEnabled)
+     canvas.addEventListener("mousedown", function(evt) {
         if (_this.controlEnabled && !_this.weponShoot) {
             _this.weponShoot = true;
             _this.handleUserMouseDown();
@@ -65,33 +87,13 @@ Player = function(game, canvas) {
             break;
         }
     }, false);
-
-    // Quand la souris bouge dans la scène
-    window.addEventListener("mousemove", function(evt) {
-        if(_this.rotEngaged === true){
-            _this.camera.playerBox.rotation.y+=evt.movementX * 0.001 * (_this.angularSensibility / 250);
-            var nextRotationX = _this.camera.playerBox.rotation.x + (evt.movementY * 0.001 * (_this.angularSensibility / 250));
-            if( nextRotationX < degToRad(90) && nextRotationX > degToRad(-90)){
-                _this.camera.playerBox.rotation.x+=evt.movementY * 0.001 * (_this.angularSensibility / 250);
-            }
-        }
-    }, false);
-    
-    // Initialisation de la caméra
-    this._initCamera(this.game.scene, canvas); 
-    // Le joueur doit cliquer dans la scène pour que controlEnabled soit changé
-    this.controlEnabled = false;
-
-    // On lance l'event _initPointerLock pour checker le clic dans la scène
-    this._initPointerLock(); 
-
-    
 };
 
 
 Player.prototype = {
     _initCamera : function(scene, canvas) {
-        
+        var _this = this;
+
         // PlayerBox
         var playerBox = BABYLON.Mesh.CreateBox("headMainPlayer", 3, scene);
         playerBox.position = new BABYLON.Vector3(-20, 5, 0);
@@ -245,5 +247,11 @@ Player.prototype = {
 
         // On signale à Weapons que le joueur est mort
         this.isAlive=false;
+        var newPlayer = this;
+        var canvas = this.game.scene.getEngine().getRenderingCanvas();
+        setTimeout(function(){ 
+            newPlayer._initCamera(newPlayer.game.scene, canvas);
+            newPlayer.game.scene.activeCamera = newPlayer.camera;
+        }, 4000);
     },
 };
