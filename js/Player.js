@@ -100,14 +100,15 @@ Player.prototype = {
         playerBox.ellipsoid = new BABYLON.Vector3(2, 2, 2);
 
         // On crée la caméra
-        this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 0, 0), scene);
+        this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(-20, 5, 0), scene);
         this.camera.playerBox = playerBox
         this.camera.parent = this.camera.playerBox;
-
+   
+        
         // Ajout des collisions avec playerBox
         this.camera.playerBox.checkCollisions = true;
         this.camera.playerBox.applyGravity = true;
-
+        
         // Si le joueur est en vie ou non
         this.isAlive = true;
 
@@ -131,7 +132,11 @@ Player.prototype = {
         this.camera.health = 100;
         // L'armure du joueur
         this.camera.armor = 0;
+     // On demande à la caméra de regarder au point zéro de la scène
+     this.camera.setTarget(BABYLON.Vector3.Zero());
 
+     // On affecte le mouvement de la caméra au canvas
+     this.camera.attachControl(canvas, true);
     },
     _initPointerLock : function() {
         var _this = this;

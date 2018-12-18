@@ -27,9 +27,6 @@ Arena = function(game) {
     // activation des collisions sur les box de l'arène
     boxArena.checkCollisions = true;
 
-    var playerBox = BABYLON.Mesh.CreateBox("headMainPlayer", 3, scene);
-    playerBox.position = new BABYLON.Vector3(-20, 5, 0);
-    playerBox.ellipsoid = new BABYLON.Vector3(2, 2, 2);
 
     var columns = [];
     var numberColumn = 6;
