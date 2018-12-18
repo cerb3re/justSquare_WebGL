@@ -2,18 +2,15 @@ Player = function(game, canvas) {
     // _this est l'accès à la caméra à l'interieur de Player
     var _this = this;
     // Si le tir est activée ou non
-    this.weponShoot = false;
+    _this.weponShoot = false;
 
     _this.angularSensibility = 0;
     // Le jeu, chargé dans l'objet Player
-    this.game = game;
-    this.speed = 0.3;
+    _this.game = game;
+    _this.speed = 0.3;
 
     // Axe de mouvement X et Z
-    this.axisMovement = [false,false,false,false];
-    // On récupère le canvas de la scène 
-   // On récupère le canvas de la scène 
-    var canvas = this.game.scene.getEngine().getRenderingCanvas();
+    _this.axisMovement = [false,false,false,false];
 
     // On affecte le clic et on vérifie qu'il est bien utilisé dans la scène (_this.controlEnabled)
     canvas.addEventListener("mousedown", function(evt) {
@@ -79,12 +76,12 @@ Player = function(game, canvas) {
     }, false);
     
     // Initialisation de la caméra
-    this._initCamera(this.game.scene, canvas); 
+    _this._initCamera(game.scene, canvas); 
     // Le joueur doit cliquer dans la scène pour que controlEnabled soit changé
-    this.controlEnabled = false;
+    _this.controlEnabled = false;
 
     // On lance l'event _initPointerLock pour checker le clic dans la scène
-    this._initPointerLock(); 
+    _this._initPointerLock(); 
 
     
 };
@@ -92,7 +89,6 @@ Player = function(game, canvas) {
 
 Player.prototype = {
     _initCamera : function(scene, canvas) {
-        var _this = this;
 
         // PlayerBox
         var playerBox = BABYLON.Mesh.CreateBox("headMainPlayer", 3, scene);
@@ -100,10 +96,12 @@ Player.prototype = {
         playerBox.ellipsoid = new BABYLON.Vector3(2, 2, 2);
 
         // On crée la caméra
-        this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(-20, 5, 0), scene);
+        this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 0, 0), scene);
         this.camera.playerBox = playerBox
         this.camera.parent = this.camera.playerBox;
-   
+        
+        // On affecte le mouvement de la caméra au canvas
+        this.camera.attachControl(canvas, true);
         
         // Ajout des collisions avec playerBox
         this.camera.playerBox.checkCollisions = true;
@@ -121,22 +119,12 @@ Player.prototype = {
         // On ajoute l'axe de mouvement
         this.camera.axisMovement = [false,false,false,false];
 
-        var hitBoxPlayer = BABYLON.Mesh.CreateBox("hitBoxPlayer", 3, scene);
-        hitBoxPlayer.parent = this.camera.playerBox;
-        hitBoxPlayer.scaling.y = 2;
-        hitBoxPlayer.isPickable = true;
-        hitBoxPlayer.isMain = true;
-
         /////////////////////////////////////////////////
         // La santé du joueur
         this.camera.health = 100;
         // L'armure du joueur
         this.camera.armor = 0;
-     // On demande à la caméra de regarder au point zéro de la scène
-     this.camera.setTarget(BABYLON.Vector3.Zero());
 
-     // On affecte le mouvement de la caméra au canvas
-     this.camera.attachControl(canvas, true);
     },
     _initPointerLock : function() {
         var _this = this;

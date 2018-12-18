@@ -69,7 +69,6 @@ Game.prototype = {
         return scene;
     },
     renderRockets : function() {
-        
         for (var i = 0; i < this._rockets.length; i++) {
             // On crée un rayon qui part de la base de la roquette vers l'avant
             var rayRocket = new BABYLON.Ray(this._rockets[i].position,this._rockets[i].direction);
@@ -100,7 +99,7 @@ Game.prototype = {
                     // DEGATS
                     if (this._PlayerData.isAlive && this._PlayerData.camera.playerBox && explosionRadius.intersectsMesh(this._PlayerData.camera.playerBox)) {
                         // Envoi à la fonction d'affectation des dégâts
-                        //console.log('hit');
+                        console.log('hit');
                         this._PlayerData.getDamage(30);
                     }
                 }
